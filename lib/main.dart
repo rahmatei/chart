@@ -15,13 +15,14 @@ class MyApp extends StatelessWidget {
       title: 'testtt',
       theme: ThemeData(
         accentColor: Colors.blue,
-        primarySwatch: Colors.cyan,
-        primaryColor: Colors.cyan,
+        primarySwatch: Colors.purple,
+        primaryColor: Colors.purple,
         fontFamily: 'Quicksand-Bold',
         textTheme: ThemeData.light().textTheme.copyWith(
               headline6: TextStyle(
                 fontFamily: 'OpenSans',
                 fontWeight: FontWeight.bold,
+                color: Colors.black54,
                 fontSize: 15,
               ),
             ),
