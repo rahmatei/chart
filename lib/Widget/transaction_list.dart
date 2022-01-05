@@ -4,8 +4,9 @@ import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> trx;
+  final Function trxDel;
 
-  TransactionList({required this.trx});
+  TransactionList({required this.trx,required this.trxDel});
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +56,7 @@ class TransactionList extends StatelessWidget {
                             color: Colors.grey,
                           ),
                         ),
+                        trailing: IconButton(icon: Icon(Icons.access_alarm),onPressed:()=>trxDel(trx[index].id),),
                       )
 
                       /* Row(
