@@ -37,15 +37,6 @@ class Chart extends StatelessWidget {
     return Card(
         elevation: 5,
         margin: EdgeInsets.all(20),
-<<<<<<< HEAD
-        child: Row(
-          children: groupTotalValues.map((data) {
-            return ChartBar(
-                lable: data['day'].toString(),
-                spendingAmount: double.parse(data['amount'].toString()),
-                spendingPctAmount: totalSpending==0.0 ?0.0 : (data['amount'] as double) / totalSpending,);
-          }).toList(),
-=======
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
@@ -63,7 +54,6 @@ class Chart extends StatelessWidget {
               );
             }).toList(),
           ),
->>>>>>> 949887b70eef1a30d4a31082e6b34e2d33c3c23a
         ));
   }
 }
