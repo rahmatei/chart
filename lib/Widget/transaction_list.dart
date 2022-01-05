@@ -3,11 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
-<<<<<<< HEAD
     final List<Transaction> trx;
-=======
-  final List<Transaction> trx;
->>>>>>> 949887b70eef1a30d4a31082e6b34e2d33c3c23a
   final Function trxDel;
 
   TransactionList({required this.trx,required this.trxDel});

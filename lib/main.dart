@@ -109,11 +109,7 @@ class _MyHomeState extends State<MyHome> {
                     .isAfter(DateTime.now().subtract(Duration(days: 7)));
               }).toList(),
             ),
-<<<<<<< HEAD
-            TransactionList(trx: transaction),
-=======
             TransactionList(trx: transaction,trxDel:deleteTransaction)
->>>>>>> 949887b70eef1a30d4a31082e6b34e2d33c3c23a
           ],
         )),
       ),
