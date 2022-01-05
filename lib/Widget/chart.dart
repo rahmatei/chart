@@ -34,7 +34,6 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(groupTotalValues);
     return Card(
         elevation: 5,
         margin: EdgeInsets.all(20),
@@ -43,7 +42,7 @@ class Chart extends StatelessWidget {
             return ChartBar(
                 lable: data['day'].toString(),
                 spendingAmount: double.parse(data['amount'].toString()),
-                spendingPctAmount: (data['amount'] as double) / totalSpending);
+                spendingPctAmount: totalSpending==0.0 ?0.0 : (data['amount'] as double) / totalSpending,);
           }).toList(),
         ));
   }

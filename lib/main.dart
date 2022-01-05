@@ -15,8 +15,8 @@ class MyApp extends StatelessWidget {
       title: 'testtt',
       theme: ThemeData(
         accentColor: Colors.blue,
-        primarySwatch: Colors.cyan,
-        primaryColor: Colors.cyan,
+        primarySwatch: Colors.purple,
+        primaryColor: Colors.purple,
         fontFamily: 'Quicksand-Bold',
         textTheme: ThemeData.light().textTheme.copyWith(
               headline6: TextStyle(
@@ -104,7 +104,7 @@ class _MyHomeState extends State<MyHome> {
                     .isAfter(DateTime.now().subtract(Duration(days: 7)));
               }).toList(),
             ),
-            TransactionList(trx: transaction)
+            TransactionList(trx: transaction),
           ],
         )),
       ),

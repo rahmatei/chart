@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 
 class ChartBar extends StatelessWidget {
@@ -14,6 +12,7 @@ class ChartBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("pct : ${spendingPctAmount.toString()}");
     return Column(
       children: [
         Text('\$${spendingAmount.toStringAsFixed(0)}'),
@@ -21,8 +20,8 @@ class ChartBar extends StatelessWidget {
           height: 4,
         ),
         Container(
-          width: 60,
-          height: 10,
+          width: 10,
+          height: 60,
           child: Stack(
             children: [
               Container(
