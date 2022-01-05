@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
+<<<<<<< HEAD
     final List<Transaction> trx;
+=======
+  final List<Transaction> trx;
+>>>>>>> 949887b70eef1a30d4a31082e6b34e2d33c3c23a
   final Function trxDel;
 
   TransactionList({required this.trx,required this.trxDel});
@@ -30,7 +34,36 @@ class TransactionList extends StatelessWidget {
             : ListView.builder(
                 itemBuilder: (context, index) {
                   return Card(
-                    child: Row(
+                      elevation: 8,
+                      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: Theme.of(context).primaryColor,
+                          radius: 30,
+                          child: Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: FittedBox(
+                              child: Text(
+                                '\$${trx[index].amount}',
+                                style: Theme.of(context).textTheme.headline6,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        ),
+                        title: Text(trx[index].title,
+                            style: Theme.of(context).textTheme.headline6),
+                        subtitle: Text(
+                          /*DateFormat().format(tx.dt),*/
+                          DateFormat.yMMMd().format(trx[index].dt),
+                          style: TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ),
+                        trailing: IconButton(icon: Icon(Icons.access_alarm),onPressed:()=>trxDel(trx[index].id),),
+                      )
+
+                      /* Row(
                       children: [
                         Container(
                           width: 65,
@@ -65,8 +98,8 @@ class TransactionList extends StatelessWidget {
                           ],
                         )
                       ],
-                    ),
-                  );
+                    ),*/
+                      );
                 },
                 itemCount: trx.length));
   }

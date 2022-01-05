@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
               headline6: TextStyle(
                 fontFamily: 'OpenSans',
                 fontWeight: FontWeight.bold,
+                color: Colors.black54,
                 fontSize: 15,
               ),
             ),
@@ -55,13 +56,13 @@ class _MyHomeState extends State<MyHome> {
     // Transaction(id: 'tx2', title: 'Shirt', amount: 5.10, dt: DateTime.now()),
   ];
 
-  void _addTransaction(String name, double amount) {
+  void _addTransaction(String name, double amount,DateTime selectedDate) {
     setState(() {
       transaction.add(Transaction(
           id: DateTime.now().toString(),
           title: name,
           amount: amount,
-          dt: DateTime.now()));
+          dt: selectedDate));
     });
   }
 
@@ -76,7 +77,11 @@ class _MyHomeState extends State<MyHome> {
           );
         });
   }
-
+  void deleteTransaction(String id){
+    setState(() {
+    transaction.removeWhere((data) => data.id==id);  
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,7 +109,11 @@ class _MyHomeState extends State<MyHome> {
                     .isAfter(DateTime.now().subtract(Duration(days: 7)));
               }).toList(),
             ),
+<<<<<<< HEAD
             TransactionList(trx: transaction),
+=======
+            TransactionList(trx: transaction,trxDel:deleteTransaction)
+>>>>>>> 949887b70eef1a30d4a31082e6b34e2d33c3c23a
           ],
         )),
       ),
