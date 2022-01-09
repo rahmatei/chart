@@ -3,8 +3,12 @@ import 'package:chart/Widget/new_transaction.dart';
 import 'package:chart/Widget/transaction_list.dart';
 import 'package:chart/models/transaction.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitUp]);
   runApp(MyApp());
 }
 
@@ -56,7 +60,7 @@ class _MyHomeState extends State<MyHome> {
     // Transaction(id: 'tx2', title: 'Shirt', amount: 5.10, dt: DateTime.now()),
   ];
 
-  void _addTransaction(String name, double amount,DateTime selectedDate) {
+  void _addTransaction(String name, double amount, DateTime selectedDate) {
     setState(() {
       transaction.add(Transaction(
           id: DateTime.now().toString(),
@@ -77,39 +81,54 @@ class _MyHomeState extends State<MyHome> {
           );
         });
   }
-  void deleteTransaction(String id){
+
+  void deleteTransaction(String id) {
     setState(() {
-    transaction.removeWhere((data) => data.id==id);  
+      transaction.removeWhere((data) => data.id == id);
     });
   }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        title: Text(
-          'Data Transaction',
-        ),
-        actions: [
-          IconButton(
-              onPressed: () => _showAddTransactionBottomSheet(context),
-              icon: Icon(
-                Icons.add,
-              ))
-        ],
+    final appbar = AppBar(
+      backgroundColor: Theme.of(context).primaryColor,
+      title: Text(
+        'Data Transaction',
       ),
+      actions: [
+        IconButton(
+            onPressed: () => _showAddTransactionBottomSheet(context),
+            icon: Icon(
+              Icons.add,
+            ))
+      ],
+    );
+    return Scaffold(
+      appBar: appbar,
       body: SingleChildScrollView(
         child: SafeArea(
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Chart(
-              recentedtrx: transaction.where((tx) {
-                return tx.dt
-                    .isAfter(DateTime.now().subtract(Duration(days: 7)));
-              }).toList(),
+            Container(
+              height: (MediaQuery.of(context).size.height -
+                      appbar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.32,
+              child: Chart(
+                recentedtrx: transaction.where((tx) {
+                  return tx.dt
+                      .isAfter(DateTime.now().subtract(Duration(days: 7)));
+                }).toList(),
+              ),
             ),
-            TransactionList(trx: transaction,trxDel:deleteTransaction)
+            Container(
+                height: (MediaQuery.of(context).size.height -
+                        appbar.preferredSize.height -
+                        MediaQuery.of(context).padding.top) *
+                    0.68,
+                child: TransactionList(
+                    trx: transaction, trxDel: deleteTransaction))
           ],
         )),
       ),

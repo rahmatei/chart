@@ -12,43 +12,47 @@ class ChartBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("pct : ${spendingPctAmount.toString()}");
-    return Column(
-      children: [
-        Container(
-            height: 20,
-            child: FittedBox(
-                child: Text('\$${spendingAmount.toStringAsFixed(0)}'))),
-        SizedBox(
-          height: 4,
-        ),
-        Container(
-          width: 10,
-          height: 60,
-          child: Stack(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.green, width: 1.0),
-                    borderRadius: BorderRadius.circular(20),
-                    color: Color.fromRGBO(220, 220, 220, 1)),
-              ),
-              FractionallySizedBox(
-                heightFactor: spendingPctAmount,
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Theme.of(context).primaryColor),
-                ),
-              )
-            ],
+    //print("pct : ${spendingPctAmount.toString()}");
+    return LayoutBuilder(builder: (ctx, constraint) {
+      return Column(
+        children: [
+          Container(
+              height: constraint.maxHeight * 0.2,
+              child: FittedBox(
+                  child: Text('\$${spendingAmount.toStringAsFixed(0)}'))),
+          SizedBox(
+            height: constraint.maxHeight * 0.05,
           ),
-        ),
-        SizedBox(
-          height: 4,
-        ),
-        Text(lable)
-      ],
-    );
+          Container(
+            width: 10,
+            height: constraint.maxHeight * 0.6,
+            child: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.green, width: 1.0),
+                      borderRadius: BorderRadius.circular(20),
+                      color: Color.fromRGBO(220, 220, 220, 1)),
+                ),
+                FractionallySizedBox(
+                  heightFactor: spendingPctAmount,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Theme.of(context).primaryColor),
+                  ),
+                )
+              ],
+            ),
+          ),
+          SizedBox(
+            height: constraint.maxHeight * 0.05,
+          ),
+          Container(
+              height: constraint.maxHeight * 0.1,
+              child: FittedBox(child: Text(lable)))
+        ],
+      );
+    });
   }
 }
