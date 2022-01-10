@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
+ WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitUp]);
+    [DeviceOrientation.portraitUp, DeviceOrientation.portraitUp]);
   runApp(MyApp());
 }
 
@@ -87,9 +87,11 @@ class _MyHomeState extends State<MyHome> {
       transaction.removeWhere((data) => data.id == id);
     });
   }
-
+  bool _showChart=false;
   @override
   Widget build(BuildContext context) {
+    final _isOriatation=MediaQuery.of(context).orientation==Orientation.landscape;
+
     final appbar = AppBar(
       backgroundColor: Theme.of(context).primaryColor,
       title: Text(
@@ -110,6 +112,15 @@ class _MyHomeState extends State<MyHome> {
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            if(_isOriatation) Row(
+              children: [
+                Text('Show chart'),
+                Switch(value: _showChart, onChanged: (value){
+                  _showChart=value;
+                })
+              ],
+            ),
+            if(!_isOriatation)
             Container(
               height: (MediaQuery.of(context).size.height -
                       appbar.preferredSize.height -
@@ -122,6 +133,26 @@ class _MyHomeState extends State<MyHome> {
                 }).toList(),
               ),
             ),
+            if(!_isOriatation)
+            Container(
+                height: (MediaQuery.of(context).size.height -
+                        appbar.preferredSize.height -
+                        MediaQuery.of(context).padding.top) *
+                    0.68,
+                child: TransactionList(
+                    trx: transaction, trxDel: deleteTransaction)),
+            if (_isOriatation) _showChart? Container(
+              height: (MediaQuery.of(context).size.height -
+                      appbar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.68,
+              child: Chart(
+                recentedtrx: transaction.where((tx) {
+                  return tx.dt
+                      .isAfter(DateTime.now().subtract(Duration(days: 7)));
+                }).toList(),
+              ),
+            ):
             Container(
                 height: (MediaQuery.of(context).size.height -
                         appbar.preferredSize.height -
