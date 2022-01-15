@@ -1,14 +1,16 @@
+import 'dart:io';
 import 'package:chart/Widget/chart.dart';
 import 'package:chart/Widget/new_transaction.dart';
 import 'package:chart/Widget/transaction_list.dart';
 import 'package:chart/models/transaction.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 void main() {
- WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
-    [DeviceOrientation.portraitUp, DeviceOrientation.portraitUp]);
+      [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeRight]);
   runApp(MyApp());
 }
 
@@ -59,7 +61,7 @@ class _MyHomeState extends State<MyHome> {
     // Transaction(id: 'tx1', title: 'Shoes', amount: 10.10, dt: DateTime.now()),
     // Transaction(id: 'tx2', title: 'Shirt', amount: 5.10, dt: DateTime.now()),
   ];
-
+  bool _showChart = false;
   void _addTransaction(String name, double amount, DateTime selectedDate) {
     setState(() {
       transaction.add(Transaction(
@@ -87,61 +89,21 @@ class _MyHomeState extends State<MyHome> {
       transaction.removeWhere((data) => data.id == id);
     });
   }
-  bool _showChart=false;
-  @override
-  Widget build(BuildContext context) {
-    final _isOriatation=MediaQuery.of(context).orientation==Orientation.landscape;
 
-    final appbar = AppBar(
-      backgroundColor: Theme.of(context).primaryColor,
-      title: Text(
-        'Data Transaction',
+  List<Widget> _isLandscapeContent(PreferredSizeWidget appbar) {
+    return [
+      Row(
+        children: [
+          Text('Show chart'),
+          Switch.adaptive(
+              value: _showChart,
+              onChanged: (value) {
+                _showChart = value;
+              }),
+        ],
       ),
-      actions: [
-        IconButton(
-            onPressed: () => _showAddTransactionBottomSheet(context),
-            icon: Icon(
-              Icons.add,
-            ))
-      ],
-    );
-    return Scaffold(
-      appBar: appbar,
-      body: SingleChildScrollView(
-        child: SafeArea(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if(_isOriatation) Row(
-              children: [
-                Text('Show chart'),
-                Switch(value: _showChart, onChanged: (value){
-                  _showChart=value;
-                })
-              ],
-            ),
-            if(!_isOriatation)
-            Container(
-              height: (MediaQuery.of(context).size.height -
-                      appbar.preferredSize.height -
-                      MediaQuery.of(context).padding.top) *
-                  0.32,
-              child: Chart(
-                recentedtrx: transaction.where((tx) {
-                  return tx.dt
-                      .isAfter(DateTime.now().subtract(Duration(days: 7)));
-                }).toList(),
-              ),
-            ),
-            if(!_isOriatation)
-            Container(
-                height: (MediaQuery.of(context).size.height -
-                        appbar.preferredSize.height -
-                        MediaQuery.of(context).padding.top) *
-                    0.68,
-                child: TransactionList(
-                    trx: transaction, trxDel: deleteTransaction)),
-            if (_isOriatation) _showChart? Container(
+      _showChart
+          ? Container(
               height: (MediaQuery.of(context).size.height -
                       appbar.preferredSize.height -
                       MediaQuery.of(context).padding.top) *
@@ -152,24 +114,95 @@ class _MyHomeState extends State<MyHome> {
                       .isAfter(DateTime.now().subtract(Duration(days: 7)));
                 }).toList(),
               ),
-            ):
-            Container(
-                height: (MediaQuery.of(context).size.height -
-                        appbar.preferredSize.height -
-                        MediaQuery.of(context).padding.top) *
-                    0.68,
-                child: TransactionList(
-                    trx: transaction, trxDel: deleteTransaction))
-          ],
-        )),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Builder(
-        builder: (context) => FloatingActionButton(
-          onPressed: () => _showAddTransactionBottomSheet(context),
-          child: Icon(Icons.add),
+            )
+          : Container(
+              height: (MediaQuery.of(context).size.height -
+                      appbar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.68,
+              child:
+                  TransactionList(trx: transaction, trxDel: deleteTransaction))
+    ];
+  }
+
+  List<Widget> _isPortrateContnt(PreferredSizeWidget appbar) {
+    return [
+      Container(
+        height: (MediaQuery.of(context).size.height -
+                appbar.preferredSize.height -
+                MediaQuery.of(context).padding.top) *
+            0.32,
+        child: Chart(
+          recentedtrx: transaction.where((tx) {
+            return tx.dt.isAfter(DateTime.now().subtract(Duration(days: 7)));
+          }).toList(),
         ),
       ),
+      Container(
+          height: (MediaQuery.of(context).size.height -
+                  appbar.preferredSize.height -
+                  MediaQuery.of(context).padding.top) *
+              0.68,
+          child: TransactionList(trx: transaction, trxDel: deleteTransaction))
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final _isOriatation =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
+    final PreferredSizeWidget appbar = (Platform.isIOS
+        ? CupertinoNavigationBar(
+            middle: Text('Data Transaction'),
+            trailing: Row(
+              children: [
+                GestureDetector(
+                  onTap: () => _showAddTransactionBottomSheet(context),
+                  child: Icon(
+                    CupertinoIcons.add,
+                  ),
+                )
+              ],
+            ),
+          )
+        : AppBar(
+            backgroundColor: Theme.of(context).primaryColor,
+            title: Text(
+              'Data Transaction',
+            ),
+            actions: [
+              IconButton(
+                  onPressed: () => _showAddTransactionBottomSheet(context),
+                  icon: Icon(
+                    Icons.add,
+                  ))
+            ],
+          )) as PreferredSizeWidget;
+
+    final v_body = SingleChildScrollView(
+      child: SafeArea(
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (_isOriatation) ..._isLandscapeContent(appbar),
+          if (!_isOriatation) ..._isPortrateContnt(appbar)
+        ],
+      )),
     );
+    return Platform.isIOS
+        ? CupertinoPageScaffold(child: v_body)
+        : Scaffold(
+            appBar: appbar,
+            body: v_body,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            floatingActionButton: Builder(
+              builder: (context) => FloatingActionButton(
+                onPressed: () => _showAddTransactionBottomSheet(context),
+                child: Icon(Icons.add),
+              ),
+            ),
+          );
   }
 }
