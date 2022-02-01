@@ -61,6 +61,7 @@ class _MyHomeState extends State<MyHome> {
     // Transaction(id: 'tx1', title: 'Shoes', amount: 10.10, dt: DateTime.now()),
     // Transaction(id: 'tx2', title: 'Shirt', amount: 5.10, dt: DateTime.now()),
   ];
+
   bool _showChart = false;
   void _addTransaction(String name, double amount, DateTime selectedDate) {
     setState(() {
