@@ -7,7 +7,10 @@ class NewTransaction extends StatefulWidget {
   NewTransaction({required this.addTx});
 
   @override
-  _NewTransactionState createState() => _NewTransactionState();
+  _NewTransactionState createState() {
+    print('life widget createState');
+    return _NewTransactionState();
+  }
 }
 
 class _NewTransactionState extends State<NewTransaction> {
@@ -16,6 +19,27 @@ class _NewTransactionState extends State<NewTransaction> {
   final amountController = TextEditingController();
 
   DateTime? _dt;
+
+  _MyHomeState() {
+    print('life widget State');
+  }
+
+  @override
+  void initState() {
+    print('life widget InitState');
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant NewTransaction oldWidget) {
+    print('life widget didUpdateWidget');
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    print('Dispose()');
+  }
 
   void onSubmit() {
     if (nameController.text.isEmpty ||
